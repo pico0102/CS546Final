@@ -64,6 +64,19 @@ let exportedMethods = {
         });
     },
 
+    addGameToProfile(id, game)
+    {
+        return userCollection().then((users) => {
+            return users.updateOne({_id: id }, {
+                $addToSet: {
+                    games: { game }
+                }
+            }).then(() => {
+                return this.getUserById(id);
+            });
+        });
+    },
+
     getUserById(id)
     {
         if (!id) 

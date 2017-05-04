@@ -64,15 +64,15 @@ let exportedMethods = {
         });
     },
 
-    addGameToProfile(id, game)
+    addGameToUser(userId, gameId)
     {
         return userCollection().then((users) => {
-            return users.updateOne({_id: id }, {
+            return users.updateOne({_id: userId }, {
                 $addToSet: {
-                    games: { game }
+                    games: { gameId }
                 }
             }).then(() => {
-                return this.getUserById(id);
+                return this.getUserById(userId);
             });
         });
     },

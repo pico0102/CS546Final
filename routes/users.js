@@ -65,4 +65,28 @@ router.put("/:id", (req, res) => {
 
 });
 
+router.put("/games/:userId", (req, res) => {
+    let gameId = req.body;
+
+    if (!userInfo) {
+        res.status(400).json({ error: "You must provide data to update a user" });
+        return;
+    }
+
+    let getUser = userData.getUserById(req.params.id).then(() => {
+        return userData.addGameToUser(req.params.id, gameId)
+            .then((updatedUser) => {
+                res.json(updatedUser);
+            }, (error) => {
+                console.log(error);
+                res.sendStatus(500);
+            });
+    }).catch(() => {
+        res.status(404).json({ error: "User not found" });
+    });
+
+});
+
+
+
 module.exports = router;

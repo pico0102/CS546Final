@@ -19,6 +19,13 @@ let exportedMethods = {
         });
     },
 
+    getAllGames()
+    {
+        return gameCollection().then((games) => {
+            return games.find();
+        });
+    },
+
     getGameByName(name) 
     {
         if (!name) 

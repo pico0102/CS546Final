@@ -39,6 +39,31 @@ let exportedMethods = {
         });
     },
 
+    updateUser(userId, userInfo)
+    {
+        if(!userId)
+            return Promise.reject("You must provide an id to update");
+
+        return userCollection().then((users) => {
+            let updatedUserData = {};
+
+            if(userInfo.password){
+                updatedUserData.password = userInfo.password;
+            }
+            
+            let updateInfo = {
+                $set: updatedUserData
+            };
+
+            return users.updateOne({
+                _id: userId
+            }, updateInfo).then((result) =>
+            {
+                return this.getUserById(userId);
+            });
+        });
+    },
+
     getUserById(id)
     {
         if (!id) 

@@ -7,7 +7,6 @@ const gameCollection = mongoCollections.games;
 const uuidV1 = require('uuid/v1');
 
 let exportedMethods = {
-    
 
     getGameById(id)
     {
@@ -48,6 +47,50 @@ let exportedMethods = {
         });
     },
 
+    getGamesByKeyword(key)
+    {
+        if (!key)
+            return Promise.reject("You must provide a keyword to search for");
+        
+        var query = { name: new RegExp('^' + key) };
+
+        return gameCollection().then((games) => {
+            return games.find({$or:[
+                query,
+                { keywords: { $elemMatch: key }}] });
+        });
+    },
+
+    addGame(gameData)
+    {
+        if (!gameData.name) 
+            return Promise.reject("Games require a name");
+        if (!gameData.description) 
+            return Promise.reject("Games require a description");
+        if (!gameData.art)
+            return Promise.reject("Games require art")
+        if (!gameData.keywords)
+            return Promise.reject("Games require keywords");
+        
+        return gameCollection().then((games) => {
+            let newGame = {     
+                _id: uuidV1(),
+                name: gameData.name,
+                keywords: gameData.keywords,
+                art: gameData.art,
+                description: description
+            };
+
+            return games
+                .insertOne(newGame)
+                .then((newInsertInformation) => {
+                    return newInsertInformation.insertedId;
+                })
+                .then((newId) => {
+                    return this.getGameById(newId);
+                });
+        });
+    }
 }
 
 module.exports = exportedMethods;

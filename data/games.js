@@ -25,7 +25,7 @@ let exportedMethods = {
             return Promise.reject("You must provide a Video Game to search for");
 
         return gameCollection().then((games) => {
-            return games.findOne({ name: name });
+            return games.find({ name: name });
         });
     },
     

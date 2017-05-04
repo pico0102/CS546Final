@@ -35,7 +35,7 @@ router.post("/", (req, res) => {
         return;
     }
 
-    userData.addUser(userInfo.password, userInfo.name)
+    userData.addUser(userInfo)
         .then((newUser) => {
             res.json(newUser);
         }, () => {
@@ -47,11 +47,11 @@ router.put("/:id", (req, res) => {
     let userInfo = req.body;
 
     if (!userInfo) {
-        res.status(400).json({ error: "You must provide data to update a recipe" });
+        res.status(400).json({ error: "You must provide data to update a user" });
         return;
     }
 
-    let getRecipe = userData.getUserById(req.params.id).then(() => {
+    let getUser = userData.getUserById(req.params.id).then(() => {
         return userData.updateUser(req.params.id, userInfo)
             .then((updatedUser) => {
                 res.json(updatedUser);

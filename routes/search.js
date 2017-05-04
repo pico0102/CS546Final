@@ -5,7 +5,9 @@
 const express = require('express');
 const router = express.Router();
 const data = require("../data");
+const gameData = data.games;
 const userData = data.users;
+
 
 router.get("/", (req, res) => {
     

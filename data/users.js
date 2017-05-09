@@ -4,7 +4,7 @@
 
 const mongoCollections = require("../config/mongoCollections");
 const userCollection = mongoCollections.users;
-const uuidV1 = require('uuid/v1');
+const uuidV4 = require('uuid/v4');
 
 let exportedMethods = {
 
@@ -15,12 +15,12 @@ let exportedMethods = {
         if(!userData.password)
             return Promise.reject("Users require a password"); 
         
-        var userId = uuidV1();
+        var userId = uuidV4();
 
         return userCollection().then((users) => {
             let newUser = {     
                 _id: userId,
-                password: password,
+                password: userData.password,
                 profile: {
                     _id: userId,
                     name: userData.name,
@@ -69,7 +69,7 @@ let exportedMethods = {
         return userCollection().then((users) => {
             return users.updateOne({_id: userId }, {
                 $addToSet: {
-                    games: { gameId }
+                    'profile.games': gameId
                 }
             }).then(() => {
                 return this.getUserById(userId);

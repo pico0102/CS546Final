@@ -4,7 +4,7 @@
 
 const mongoCollections = require("../config/mongoCollections");
 const gameCollection = mongoCollections.games;
-const uuidV1 = require('uuid/v1');
+const uuidV4 = require('uuid/v4');
 
 let exportedMethods = {
 
@@ -21,7 +21,7 @@ let exportedMethods = {
     getAllGames()
     {
         return gameCollection().then((games) => {
-            return games.find();
+            return games.find({}).toArray();
         });
     },
 
@@ -74,11 +74,11 @@ let exportedMethods = {
         
         return gameCollection().then((games) => {
             let newGame = {     
-                _id: uuidV1(),
+                _id: uuidV4(),
                 name: gameData.name,
                 keywords: gameData.keywords,
                 art: gameData.art,
-                description: description
+                description: gameData.description
             };
 
             return games

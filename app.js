@@ -60,7 +60,7 @@ const handlebarsInstance = exphbs.create({
 });
 
 let addUser = users.addUser({
-    name: "Rad Username",
+    username: "Rad Username",
     password: "meme"
 });
 

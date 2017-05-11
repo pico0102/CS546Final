@@ -7,15 +7,22 @@ const userCollection = mongoCollections.users;
 const uuidV4 = require('uuid/v4');
 var bcrypt = require('bcrypt');
 
-let exportedMethods = {
+
+let exportedMethods = 
+{
+    getUserById(id)
+    {
+        if (!id) 
+            return Promise.reject("You must provide an id to search for");
+    },
 
     addUser(userData)
     {
-        if(!userData.name)
+        if(!userData.username)
             return Promise.reject("User Profiles require a name");
         if(!userData.password)
-            return Promise.reject("Users require a password");
-
+            return Promise.reject("Users require a password"); 
+        
         var userId = uuidV4();
 
         return userCollection().then((users) => {
@@ -24,7 +31,7 @@ let exportedMethods = {
                 password: userData.password,
                 profile: {
                     _id: userId,
-                    name: userData.name,
+                    name: userData.username,
                     games: []
                 }
             };
@@ -96,9 +103,9 @@ let exportedMethods = {
 
             return user.profile;
         });
-    }
+    },
 
-    findUserByUsername = function(username, cb) {
+    findUserByUsername(username, cb) {
       if(!username)
         return Promise.reject("You must provide a username");
 
@@ -107,12 +114,11 @@ let exportedMethods = {
           return Promise.resolve(cb(null, arr));
         });
       });
-    }
+    },
 
     verifyPassword(userData, password){
       return bcrypt.compareSync(password, userData.password);
     }
-
 }
 
 module.exports = exportedMethods;

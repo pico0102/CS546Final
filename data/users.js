@@ -6,7 +6,12 @@ const mongoCollections = require("../config/mongoCollections");
 const userCollection = mongoCollections.users;
 const uuidV4 = require('uuid/v4');
 
-let exportedMethods = {
+let exportedMethods = 
+{
+    getUserById(id)
+    {
+        if (!id) 
+            return Promise.reject("You must provide an id to search for");
 
     addUser(userData)
     {
@@ -96,7 +101,6 @@ let exportedMethods = {
             return user.profile;
         });
     }
-    
 }
 
 module.exports = exportedMethods;

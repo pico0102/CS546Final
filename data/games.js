@@ -30,10 +30,12 @@ let exportedMethods = {
         if (!name) 
             return Promise.reject("You must provide a Video Game to search for");
 
+
         var query = { name: new RegExp('^' + name) };
 
         return gameCollection().then((games) => {
             return games.find(query);
+
         });
     },
     

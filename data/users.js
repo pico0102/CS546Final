@@ -10,7 +10,7 @@ let exportedMethods = {
 
     addUser(userData)
     {
-        if(!userData.name)
+        if(!userData.username)
             return Promise.reject("User Profiles require a name");
         if(!userData.password)
             return Promise.reject("Users require a password"); 
@@ -23,7 +23,7 @@ let exportedMethods = {
                 password: userData.password,
                 profile: {
                     _id: userId,
-                    name: userData.name,
+                    name: userData.username,
                     games: []
                 }
             };

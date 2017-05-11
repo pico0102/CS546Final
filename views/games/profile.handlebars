@@ -2,9 +2,10 @@
   <h1>{{user.profile.name}}</h1>
   {{#each games}}  
     <article class="game">
-        <img src={{this.art}} alt="Game Art">
         <h2>{{this.name}}</h2>
-        <p>{{this.keywords}}</p>
+        <img src={{this.art}} alt="Game Art">
+        <p>Keywords: {{this.keywords}}</p>
+        <h3>Description:</h3>
         <p>{{this.description}}</p>
     </article>
   {{/each}}

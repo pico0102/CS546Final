@@ -47,15 +47,15 @@ router.post("/", (req, res) => {
         return;
     }
 
-    if (!userInfo.name) {
+    if (!userInfo.username) {
         res.status(400).json({ error: "You must provide name" });
         return;
     }
 
     userData.addUser(userInfo)
         .then((newUser) => {
-            res.json(newUser);
-        }, () => {
+            res.render('games/profile', { user: newUser });
+        }).catch(() => {
             res.sendStatus(500);
         });
 });
@@ -72,7 +72,7 @@ router.put("/:id", (req, res) => {
         return userData.updateUser(req.params.id, userInfo)
             .then((updatedUser) => {
                 res.json(updatedUser);
-            }, (error) => {
+            }).catch((error) => {
                 console.log(error);
                 res.sendStatus(500);
             });
@@ -94,7 +94,7 @@ router.put("/games/:userId", (req, res) => {
         return userData.addGameToUser(req.params.id, gameId)
             .then((updatedUser) => {
                 res.json(updatedUser);
-            }, (error) => {
+            }).catch((error) => {
                 console.log(error);
                 res.sendStatus(500);
             });

@@ -19,7 +19,7 @@ app.set('view engine', 'handlebars');
 configRoutes(app);
 
 let addUser = users.addUser({
-    name: "Rad Username",
+    username: "Rad Username",
     password: "meme"
 });
 

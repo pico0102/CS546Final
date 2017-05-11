@@ -54,12 +54,13 @@ let exportedMethods = {
         if (!key)
             return Promise.reject("You must provide a keyword to search for");
         
-        var query = { name: new RegExp('^' + key) };
+        var query = new RegExp('/.*' + key + '.*/');
 
         return gameCollection().then((games) => {
-            return games.find({$or:[
-                query,
-                { keywords: { $elemMatch: key }}] });
+            return games.find({ $or:[
+                { name: key },
+                { keywords: key }]
+            }).toArray();
         });
     },
 

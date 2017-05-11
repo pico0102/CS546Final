@@ -4,18 +4,14 @@
     </header>
 
 
-    <form id="login-form" action="/users" method="post">
+    <form id="login-form" action="/login" method="post">
         <div>
             <label>Username:</label>
-            <input type="text" name="username" id="user"/>
+            <input type="text" name="username" id="username" placeholder="Username"/>
         </div>
         <div>
             <label>Password:</label>
-            <input type="password" name="password" id="pass"/>
-        </div>
-        <div class="form-group hidden" id="error-container">
-            <div class="alert alert-danger text-goes-here">
-            </div>
+            <input type="password" name="password" id="password" placeholder="Password"/>
         </div>
         <div class="form-group">
             <input type="submit" value="Log In" class="btn btn-default"/>

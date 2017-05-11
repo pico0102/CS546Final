@@ -10,12 +10,6 @@ var bcrypt = require('bcrypt');
 
 let exportedMethods = 
 {
-    getUserById(id)
-    {
-        if (!id) 
-            return Promise.reject("You must provide an id to search for");
-    },
-
     addUser(userData)
     {
         if(!userData.username)
@@ -105,19 +99,28 @@ let exportedMethods =
         });
     },
 
-    findUserByUsername(username, cb) {
+    findByUsername(username, cb) {
       if(!username)
         return Promise.reject("You must provide a username");
-
       return userCollection().then((users) => {
-        return users.findOne({username: username}).then((user) => {
-          return Promise.resolve(cb(null, arr));
+        return users.findOne({ "profile.name": username}).then((user) => {
+          return Promise.resolve(cb(null, user));
         });
       });
     },
 
     verifyPassword(userData, password){
-      return bcrypt.compareSync(password, userData.password);
+      return (userData.password == password);//bcrypt.compareSync(password, userData.password);
+    },
+
+    findById(id, cb)
+    {
+      if (!id)
+          return Promise.reject("You must provide an id to search for");
+
+      return this.getUserById(id).then((user) => {
+        return Promise.resolve(cb(null, user));
+      });
     }
 }
 

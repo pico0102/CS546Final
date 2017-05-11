@@ -22,7 +22,7 @@ const userData = require("../../data/users")
     // Gets the whole section given an HTML ID
     //******************************************* 
 
-    var loginForm = document.getElementById("login-form");
+    var searchForm = document.getElementById("search-form");
 
     //******************************************* 
     // if the varName has contents in its element,
@@ -30,41 +30,21 @@ const userData = require("../../data/users")
     // events when something happens
     //******************************************* 
 
-    if (loginForm) {
+    if (searchForm) {
         // We can store references to our elements; it's better to 
         // store them once rather than re-query the DOM traversal each time
         // that the event runs.
-        var username = document.getElementById("user");
-        var password = document.getElementById("pass");
-
-        //TAKE CARE OF CHECKING THE BCRYPT HERE I GUESS?
-
-        var errorContainer = document.getElementById("error-container");
-        var errorTextElement = errorContainer.getElementsByClassName("text-goes-here")[0];
-
-        var resultContainer = document.getElementById("result-container");
-        var resultTextElement = resultContainer.getElementsByClassName("text-goes-here")[0];
-
+        var searchStr = document.getElementById("searchStr");
 
         // We can take advantage of functional scoping; our event listener has access to its outer functional scope
         // This means that these variables are accessible in our callback
-        loginForm.addEventListener("submit", function (event) {
+        searchForm.addEventListener("submit", function (event) {
             event.preventDefault();
 
             try {
-                var userVal = username.value;
-                var passVal = password.value;
 
-                errorContainer.classList.add("hidden");
-                resultContainer.classList.add("hidden")
-
-                resultTextElement.textContent = userVal + " " + passVal;
-
-                resultContainer.classList.remove("hidden");
             } catch (e) {
                 var message = typeof e === "string" ? e : e.message;
-                errorTextElement.textContent = e;
-                errorContainer.classList.remove("hidden");
             }
         });
     }

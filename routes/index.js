@@ -12,9 +12,9 @@ const constructorMethod = (app) => {
     app.use("/games", gameRoutes);
     //app.use("/search", searchRoutes);
 
-    app.use("*", (req, res) => {
+    /*app.use("*", (req, res) => {
         res.status(404).json({error: "Not found"});
-    });
+    });*/
 };
 
 module.exports = constructorMethod;

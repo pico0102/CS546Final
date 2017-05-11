@@ -9,24 +9,23 @@
 
 <body>
     <header>
-        <button type="button">Profile</button>
-        <h1>Our Main Handlebars Page</h1>
-         <form id="search-form">
-        <div class="form-group">
-            <label for="searchStr">Search Games!:</label>
-            <input type="text" class="form-control" id="searchStr" name="searchStr" placeholder="Search for Games" value="{{searchStr}}">
-        </div>
-        <div class="form-group hidden" id="error-container">
-            <div class="alert alert-danger text-goes-here">
+
+        <form id="profile-form" action="/profile" method="get">
+            <button type="submit" id="profile-button">Profile</button>
+        </form>
+
+        <form id="dash-form" action="/dashboard" method="get">
+            <button type="submit" id="dashboard-button">Dashboard</button>
+        </form>
+
+        <form id="search-form" action="/games" method="post">
+            <div>
+                <label>Search Games:</label>
+                <input type="text" name="searchStr" id="searchStr" placeholder="Search for Games">
             </div>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-default">Search</button>
-        </div>
-        <div class="form-group hidden" id="result-container">
-            <div class="alert alert-success text-goes-here">
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-default"/>
             </div>
-        </div>
         </form>
     </header>
 

@@ -10,7 +10,7 @@ const gameData = data.games;
 
 router.get("/:id", (req, res) => {
     gameData.getGameById(req.params.id).then((game) => {
-        res.json(game);
+        res.render('games/single', { game: game });
     }).catch(() => {
         res.status(404).json({error: "Game not found" });
     });   
@@ -18,8 +18,9 @@ router.get("/:id", (req, res) => {
 
 
 router.get("/", (req, res) => {
-    gameData.getAllGames().then((games) => {
-        res.json(games);
+    gameData.getAllGames().then((gamelist) => {
+        //res.json(games);
+        res.render('games/search', { games: gamelist });
     }, () => {
         // Something went wrong with the server!
         res.sendStatus(500);

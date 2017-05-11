@@ -9,9 +9,26 @@ const userData = data.users;
 const gameData = data.games;
 
 
+router.get('/', function(req, res) {
+    res.render('games/login', { user: req.user });
+});
+
 router.get("/:id", (req, res) => {
     userData.getUserById(req.params.id).then((user) => {
-        res.json(user);
+        //res.json(user);
+        var finalArray = [];
+        var gameArray = user.profile.games;
+        for(var i = 0; i < gameArray.length; i++)
+        {
+            gameData.getGameById(gameArray[i]).then((game) => {
+                finalArray.push(game);
+            });
+        }
+
+        res.render('games/profile', { 
+            user: user,
+            games: finalArray
+        });
     }).catch(() => {
         res.status(404).json({ error: "User not found" });
     });

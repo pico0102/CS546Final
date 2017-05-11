@@ -4,7 +4,8 @@
 
 const mongoCollections = require("../config/mongoCollections");
 const userCollection = mongoCollections.users;
-const uuidV1 = require('uuid/v1');
+const uuidV4 = require('uuid/v4');
+var bcrypt = require('bcrypt');
 
 let exportedMethods = {
 
@@ -13,14 +14,14 @@ let exportedMethods = {
         if(!userData.name)
             return Promise.reject("User Profiles require a name");
         if(!userData.password)
-            return Promise.reject("Users require a password"); 
-        
-        var userId = uuidV1();
+            return Promise.reject("Users require a password");
+
+        var userId = uuidV4();
 
         return userCollection().then((users) => {
-            let newUser = {     
+            let newUser = {
                 _id: userId,
-                password: password,
+                password: userData.password,
                 profile: {
                     _id: userId,
                     name: userData.name,
@@ -50,7 +51,7 @@ let exportedMethods = {
             if(userInfo.password){
                 updatedUserData.password = userInfo.password;
             }
-            
+
             let updateInfo = {
                 $set: updatedUserData
             };
@@ -69,7 +70,7 @@ let exportedMethods = {
         return userCollection().then((users) => {
             return users.updateOne({_id: userId }, {
                 $addToSet: {
-                    games: { gameId }
+                    'profile.games': gameId
                 }
             }).then(() => {
                 return this.getUserById(userId);
@@ -79,7 +80,7 @@ let exportedMethods = {
 
     getUserById(id)
     {
-        if (!id) 
+        if (!id)
             return Promise.reject("You must provide an id to search for");
 
         return userCollection().then((users) => {
@@ -90,13 +91,28 @@ let exportedMethods = {
     getUserProfileById(id)
     {
         return this.getUserById(id).then((user) => {
-            if (!user) 
+            if (!user)
                 return Promise.reject("User not found");
 
             return user.profile;
         });
     }
-    
+
+    findUserByUsername = function(username, cb) {
+      if(!username)
+        return Promise.reject("You must provide a username");
+
+      return userCollection().then((users) => {
+        return users.findOne({username: username}).then((user) => {
+          return Promise.resolve(cb(null, arr));
+        });
+      });
+    }
+
+    verifyPassword(userData, password){
+      return bcrypt.compareSync(password, userData.password);
+    }
+
 }
 
 module.exports = exportedMethods;

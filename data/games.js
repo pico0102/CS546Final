@@ -4,7 +4,7 @@
 
 const mongoCollections = require("../config/mongoCollections");
 const gameCollection = mongoCollections.games;
-const uuidV1 = require('uuid/v1');
+const uuidV4 = require('uuid/v4');
 
 let exportedMethods = {
 
@@ -18,13 +18,24 @@ let exportedMethods = {
         });
     },
 
+    getAllGames()
+    {
+        return gameCollection().then((games) => {
+            return games.find({}).toArray();
+        });
+    },
+
     getGameByName(name) 
     {
         if (!name) 
             return Promise.reject("You must provide a Video Game to search for");
 
+
+        var query = { name: new RegExp('^' + name) };
+
         return gameCollection().then((games) => {
-            return games.findOne({ name: name });
+            return games.find(query);
+
         });
     },
     
@@ -43,9 +54,11 @@ let exportedMethods = {
         if (!key)
             return Promise.reject("You must provide a keyword to search for");
         
+        var query = { name: new RegExp('^' + key) };
+
         return gameCollection().then((games) => {
             return games.find({$or:[
-                { name: key},
+                query,
                 { keywords: { $elemMatch: key }}] });
         });
     },
@@ -63,11 +76,11 @@ let exportedMethods = {
         
         return gameCollection().then((games) => {
             let newGame = {     
-                _id: uuidV1(),
+                _id: uuidV4(),
                 name: gameData.name,
                 keywords: gameData.keywords,
                 art: gameData.art,
-                description: description
+                description: gameData.description
             };
 
             return games

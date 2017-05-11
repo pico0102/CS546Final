@@ -4,10 +4,13 @@
 
 const gameRoutes = require("./games");
 const userRoutes = require("./users");
+//const searchRoutes = require("./search");
+
 
 const constructorMethod = (app) => {
     app.use("/users", userRoutes);
     app.use("/games", gameRoutes);
+    //app.use("/search", searchRoutes);
 
     app.use("*", (req, res) => {
         res.status(404).json({error: "Not found"});

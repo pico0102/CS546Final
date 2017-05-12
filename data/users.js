@@ -6,7 +6,8 @@ const mongoCollections = require("../config/mongoCollections");
 const userCollection = mongoCollections.users;
 const uuidV4 = require('uuid/v4');
 var bcrypt = require('bcrypt');
-
+const saltRounds = 10;
+var currUsers = [];
 
 let exportedMethods = 
 {
@@ -16,13 +17,21 @@ let exportedMethods =
             return Promise.reject("User Profiles require a name");
         if(!userData.password)
             return Promise.reject("Users require a password"); 
-        
+    
         var userId = uuidV4();
 
         return userCollection().then((users) => {
+            var userArray = users.toArray();
+            for(var i = 0; i < userArray.size; i++)
+            {
+                if(userData.username == userArray[i].profile.name)
+                    return Promise.reject("Username Already Exists");
+            }
+
+            bcrypt.hash(userData.password, saltRounds, function(err, hash) {
             let newUser = {
                 _id: userId,
-                password: userData.password,
+                password: hash,
                 profile: {
                     _id: userId,
                     name: userData.username,
@@ -38,6 +47,7 @@ let exportedMethods =
                 .then((newId) => {
                     return this.getUserById(newId);
                 });
+            });
         });
     },
 
@@ -69,13 +79,19 @@ let exportedMethods =
     addGameToUser(userId, gameId)
     {
         return userCollection().then((users) => {
-            return users.updateOne({_id: userId }, {
-                $addToSet: {
-                    'profile.games': gameId
+            users.findOne({_id: userId}).then((user) =>{
+                if(user.profile.games.includes(gameId))
+                    return Promise.reject("Game already favorited.");
+                else{
+                    return users.updateOne({_id: userId }, {
+                        $addToSet: {
+                            'profile.games': gameId
+                        }
+                    }).then(() => {
+                        return this.getUserById(userId);
+                    });
                 }
-            }).then(() => {
-                return this.getUserById(userId);
-            });
+            }) 
         });
     },
 

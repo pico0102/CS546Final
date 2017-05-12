@@ -1,9 +1,12 @@
 <article class="single-game">
-    <h1>Game page</h1>
-
     <h2>{{game.name}}</h2>
     <img src={{game.art}} alt="Game Art">
     <p>Keywords: {{game.keywords}}</p>
     <h3>Description:</h3>
     <p>{{game.description}}</p>
+
+    <form id="favorite-form" action="/profile/{{game._id}}" method="post">
+        <button type="submit" id="favorite-button">Add to Favorites!</button>
+    </form>
+
 </article>

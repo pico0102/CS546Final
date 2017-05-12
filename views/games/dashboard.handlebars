@@ -7,7 +7,7 @@
   <h2>Games you might like from {{game.name}}</h2>
   {{#each games}}  
     <article class="game">
-      <h2>{{this.name}}</h2>
+      <h2><a href="/games/{{this._id}}">{{this.name}}</a></h2>
       <img src={{this.art}} alt="Game Art">
       <p>{{this.keywords}}</p>
       <p>{{this.description}}</p>
@@ -17,7 +17,7 @@
   <h2>Popular Games</h2>
   {{#each popgames}}  
     <article class="game">
-      <h2>{{this.name}}</h2>
+      <h2><a href="/games/{{this._id}}">{{this.name}}</a></h2>
       <img src={{this.art}} alt="Game Art">
       <p>{{this.keywords}}</p>
       <p>{{this.description}}</p>

@@ -3,7 +3,7 @@
   {{#each games}}  
     <article class="game">
 
-        <h2>{{this.name}}</h2>
+        <h2><a href="/games/{{this._id}}">{{this.name}}</a></h2>
         <img src={{this.art}} alt="Game Art">
         <p>Keywords: {{this.keywords}}</p>
         <h3>Description:</h3>

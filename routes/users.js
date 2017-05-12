@@ -56,7 +56,6 @@ router.put("/games/:userId", (req, res) => {
     }).catch(() => {
         res.status(404).json({ error: "User not found" });
     });
-
 });
 
 

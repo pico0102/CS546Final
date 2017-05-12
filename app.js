@@ -71,11 +71,23 @@ app.get('/',
     res.render('games/login', { user: req.user });
   });
 
-app.post('/login', 
+app.get('/login', 
   passport.authenticate('local', { failureRedirect: '/' }),
   function(req, res) {
-    res.redirect('/users/' + req.user._id);
+    res.redirect('/profile');
 });
+
+app.post('/login',
+    function(req, res){
+        var data = {username: req.body.username,
+                    password: req.body.password};
+        console.log(data);
+        users.addUser(data).then((user) => {
+            res.redirect('/profile');
+        }).catch(() => {
+            res.sendStatus(500);
+        });
+    });
 
 app.get('/dashboard',
     require('connect-ensure-login').ensureLoggedIn('/'),
@@ -89,11 +101,19 @@ app.get('/profile',
         res.redirect('/users/' + req.user._id);
     });
 
+app.post('/profile/:gameid',
+    function(req, res){
+        users.addGameToUser(req.user._id, req.params.gameid).then((user) => {
+            //res.redirect('/dashboard');
+        }).catch(()  => {
+            res.sendStatus(500);
+        });
+    });
+
 app.get('/users/:id', 
     require('connect-ensure-login').ensureLoggedIn('/'),
     function(req, res) {
         users.getUserById(req.params.id).then((user) => {
-            //res.json(user);
             var finalArray = [];
             var gameArray = user.profile.games;
             for(var i = 0; i < gameArray.length; i++)
@@ -112,27 +132,33 @@ app.get('/users/:id',
         });
 });
 
-/*let addUser = users.addUser({
-    username: "Generic",
-    password: "pass"
+app.post("/games", 
+    require('connect-ensure-login').ensureLoggedIn('/'),
+    function(req, res) {
+    var ss = req.body.searchStr;
+    if(ss == "")
+        res.render('games/search', { user: req.user });
+    else{
+        games.getGamesByKeyword(ss).then((gamelist) => {
+            res.render('games/search', { games: gamelist, user: req.user });
+        }).catch(()  => {
+            res.sendStatus(500);
+        });
+    }
 });
 
-addUser.then((user) => {
-    games.addGame({
-        name: "Anthony",
-        keywords: ["max", "meme"],
-        art: "https://upload.wikimedia.org/wikipedia/en/0/0e/BreathoftheWildFinalCover.jpg",
-        description: "I nutted"
-    }).then((game) => {
-        console.log(user);
-        console.log(game);
-        users.addGameToUser(user._id, game._id).then((user) => {
-            console.log(user);
-        });
-    });
+/*
+app.get("/games/:gameid", (req, res) => {
+    require('connect-ensure-login').ensureLoggedIn('/'),
+    function(req, res) {
+        games.getGameById(req.params.id).then((game) => {
+            res.render('games/single', { game: game });
+        }).catch(() => {
+            res.status(404).json({error: "Game not found" });
+        });   
+    }
 });*/
 
 app.listen(3000, () => {
-    console.log("We've now got a server!");
-    console.log("Your routes will be running on http://localhost:3000");
+    console.log("Website running on http://localhost:3000");
 });

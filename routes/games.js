@@ -19,13 +19,4 @@ router.get("/:id", (req, res) => {
     });   
 });
 
-router.post("/", (req, res) => {
-    var ss = req.body.searchStr;
-    gameData.getGamesByKeyword(ss).then((gamelist) => {
-        res.render('games/search', { games: gamelist });
-    }).catch(()  => {
-        res.sendStatus(500);
-    });
-});
-
 module.exports = router;

@@ -1,0 +1,42 @@
+/* font */
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300);
+
+body {
+  background-color: #edfffe;
+  font-family: Lato;
+}
+
+#main-content{
+  color: #494949;
+}
+
+#main-content legend{
+  color: #494949;
+}
+
+.game{
+  padding: 20px;
+  margin: 10px;
+  border: 2px solid #494949;
+  border-radius: 10px;
+  text-align: center;
+}
+
+img {
+  width: 300px; /*set the width or max-width*/
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.dashboard h2{
+  text-align: center;
+}
+
+.profile {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+}

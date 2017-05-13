@@ -1,22 +1,24 @@
-<article class="dashboard">
-  <h1>{{user.profile.name}}'s Dashboard</h1>
+<div class="container">
+  <article class="dashboard">
+    <h1>{{user.profile.name}}'s dashboard</h1>
 
-  <h2>Games you might like based on {{game.name}}</h2>
-  {{#each games}}  
+    <h2>games you might like based on {{game.name}}</h2>
+    {{#each games}}  
     <article class="game">
       <h2><a href="/games/{{this._id}}">{{this.name}}</a></h2>
       <img src={{this.art}} alt="Game Art">
-      <p>{{this.description}}</p>
+      <p>Description: {{this.description}}</p>
     </article>
-  {{/each}}
+    {{/each}}
 
-  <h2>Popular Games</h2>
-  {{#each popgames}}  
+    <h2>Popular Games</h2>
+    {{#each popgames}}  
     <article class="game">
       <h2><a href="/games/{{this._id}}">{{this.name}}</a></h2>
       <img src={{this.art}} alt="Game Art">
-      <p>{{this.description}}</p>
+      <p>Description: {{this.description}}</p>
     </article>
-  {{/each}}
+    {{/each}}
 
-</article>
+  </article>
+</div>

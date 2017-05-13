@@ -58,7 +58,7 @@ let exportedMethods = {
 
         return gameCollection().then((games) => {
             return games.find({ $or:[
-                { name: key },
+                { name: {$regex: new RegExp(key)} },
                 { keywords: key }]
             }).toArray();
         });

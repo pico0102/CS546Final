@@ -177,13 +177,13 @@ app.post("/games",
 });
 
 
-const allGames = require('./gameCollection');
+/*const allGames = require('./gameCollection');
 var theGames = allGames.gameCol;
 for(var j = 0; j < theGames.length; j++){
     var newGame = theGames[j];
     games.addGame(newGame);
     console.log(newGame.name);
-}
+}*/
 
 app.listen(3000, () => {
     console.log("Website running on http://localhost:3000");

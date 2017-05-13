@@ -176,17 +176,14 @@ app.post("/games",
     }
 });
 
-/*
-app.get("/games/:gameid", (req, res) => {
-    require('connect-ensure-login').ensureLoggedIn('/'),
-    function(req, res) {
-        games.getGameById(req.params.id).then((game) => {
-            res.render('games/single', { game: game });
-        }).catch(() => {
-            res.status(404).json({error: "Game not found" });
-        });   
-    }
-});*/
+
+const allGames = require('./gameCollection');
+var theGames = allGames.gameCol;
+for(var j = 0; j < theGames.length; j++){
+    var newGame = theGames[j];
+    games.addGame(newGame);
+    console.log(newGame.name);
+}
 
 app.listen(3000, () => {
     console.log("Website running on http://localhost:3000");

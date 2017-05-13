@@ -81,9 +81,8 @@ app.post('/login',
     function(req, res){
         var data = {username: req.body.username,
                     password: req.body.password};
-        console.log(data);
         users.addUser(data).then((user) => {
-            res.redirect('/profile');
+            res.redirect('/login');
         }).catch(() => {
             res.sendStatus(500);
         });

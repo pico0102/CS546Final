@@ -11,6 +11,17 @@ var currUsers = [];
 
 let exportedMethods = 
 {
+    
+    getUserById(id)
+    {
+        if (!id)
+            return Promise.reject("You must provide an id to search for");
+
+        return userCollection().then((users) => {
+            return users.findOne({ _id: id });
+        });
+    },
+
     addUser(userData)
     {
         if(!userData.username)
@@ -21,7 +32,7 @@ let exportedMethods =
         var userId = uuidV4();
 
         return userCollection().then((users) => {
-            var userArray = users.toArray();
+            var userArray = users.find({}).toArray();
             for(var i = 0; i < userArray.size; i++)
             {
                 if(userData.username == userArray[i].profile.name)
@@ -95,16 +106,6 @@ let exportedMethods =
         });
     },
 
-    getUserById(id)
-    {
-        if (!id)
-            return Promise.reject("You must provide an id to search for");
-
-        return userCollection().then((users) => {
-            return users.findOne({ _id: id });
-        });
-    },
-
     getUserProfileById(id)
     {
         return this.getUserById(id).then((user) => {
@@ -126,7 +127,7 @@ let exportedMethods =
     },
 
     verifyPassword(userData, password){
-      return (userData.password == password);//bcrypt.compareSync(password, userData.password);
+      return bcrypt.compareSync(password, userData.password);
     },
 
     findById(id, cb)

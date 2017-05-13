@@ -11,7 +11,9 @@ const gameData = data.games;
 var app2 = express();
 app2.use(bodyParser());
 
-router.get("/:id", (req, res) => {
+router.get("/:id",
+  require('connect-ensure-login').ensureLoggedIn('/'),
+  (req, res) => {
     gameData.getGameById(req.params.id).then((game) => {
         res.render('games/single', { game: game });
     }).catch(() => {

@@ -51,7 +51,7 @@ router.put("/games/:userId", (req, res) => {
                 res.json(updatedUser);
             }).catch((error) => {
                 console.log(error);
-                res.sendStatus(500);
+                res.send(500, error);
             });
     }).catch(() => {
         res.status(404).json({ error: "User not found" });

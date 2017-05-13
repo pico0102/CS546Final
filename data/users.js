@@ -7,11 +7,12 @@ const userCollection = mongoCollections.users;
 const uuidV4 = require('uuid/v4');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
-var currUsers = [];
+const currUsers = [];
+const gameData = require('./games');
+const userData = require('./users');
 
 let exportedMethods = 
-{
-    
+{ 
     getUserById(id)
     {
         if (!id)
@@ -56,7 +57,7 @@ let exportedMethods =
                     return newInsertInformation.insertedId;
                 })
                 .then((newId) => {
-                    return this.getUserById(newId);
+                    return exportedMethods.getUserById(newId);
                 });
             });
         });
@@ -82,7 +83,7 @@ let exportedMethods =
                 _id: userId
             }, updateInfo).then((result) =>
             {
-                return this.getUserById(userId);
+                return exportedMethods.getUserById(userId);
             });
         });
     },
@@ -90,7 +91,7 @@ let exportedMethods =
     addGameToUser(userId, gameId)
     {
         return userCollection().then((users) => {
-            users.findOne({_id: userId}).then((user) =>{
+            return users.findOne({_id: userId}).then((user) =>{
                 if(user.profile.games.includes(gameId))
                     return Promise.reject("Game already favorited.");
                 else{
@@ -99,16 +100,16 @@ let exportedMethods =
                             'profile.games': gameId
                         }
                     }).then(() => {
-                        return this.getUserById(userId);
+                        return exportedMethods.getUserById(userId);
                     });
                 }
-            }) 
+            }); 
         });
     },
 
     getUserProfileById(id)
     {
-        return this.getUserById(id).then((user) => {
+        return exportedMethods.getUserById(id).then((user) => {
             if (!user)
                 return Promise.reject("User not found");
 
@@ -135,9 +136,45 @@ let exportedMethods =
       if (!id)
           return Promise.reject("You must provide an id to search for");
 
-      return this.getUserById(id).then((user) => {
+      return exportedMethods.getUserById(id).then((user) => {
         return Promise.resolve(cb(null, user));
       });
+    },
+
+    getAllUsers()
+    {
+        return userCollection().then((users) => {
+            return users.find({}).toArray();
+        });
+    },
+
+    getPopularGames()
+    {
+        var userList = exportedMethods.getAllUsers();
+        return userList.then((contents) => {
+            var popularGames = {};
+            for(var i = 0; i < contents.length; i++)
+            {
+                var currGames = contents[i].profile.games;
+                for(var j = 0; j < currGames.length; j++)
+                {
+                    if(popularGames[currGames[j]] == undefined)
+                        popularGames[currGames[j]] = 1;
+                    else
+                        popularGames[currGames[j]] += 1;
+                }
+            }
+            var finalList = Object.keys(popularGames).map(function(key) {
+                return [key, popularGames[key]];
+            });
+            finalList.sort(function(first, second) {
+                return second[1] - first[1];
+            });
+
+            var returnGames = finalList.slice(0,3);
+
+            return returnGames;
+        }).catch(console.error);
     }
 }
 

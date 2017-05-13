@@ -1,11 +1,3 @@
-//William Mosca
-//CS 546 Lab 8
-//I pledge my honor that I have abided by the Steves Honor System.
-
-
-const gameData = require("../../data/games")
-const userData = require("../../data/users")
-
 
 (function () {
     
@@ -37,6 +29,23 @@ const userData = require("../../data/users")
             } catch (e) {
                 var message = typeof e === "string" ? e : e.message;
             }
+        });
+    }
+
+    const favoriteButton = document.getElementById("favorite-button");
+
+    if (favoriteButton) {
+        favoriteButton.addEventListener("click", (ev) => {
+            // get gameId from URL
+            const gameId = location.pathname.split('/').slice(-1)[0];
+            fetch('/profile/' + gameId, {method: 'PUT', credentials: 'same-origin'})
+                .then(res => res.json())
+                .then(res => {
+                    if (res.error)
+                        alert(res.error);
+                    else
+                        alert('Added!');
+                });
         });
     }
 

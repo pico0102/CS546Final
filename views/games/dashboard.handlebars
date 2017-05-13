@@ -1,10 +1,7 @@
 <article class="dashboard">
-  <h1>My Dashboard</h1>
+  <h1>{{user.profile.name}}'s Dashboard</h1>
 
-  <p>HEY:</p>
-  <p>{{user.profile.name}}</p>
-
-  <h2>Games you might like from {{game.name}}</h2>
+  <h2>Games you might like based on {{game.name}}</h2>
   {{#each games}}  
     <article class="game">
       <h2><a href="/games/{{this._id}}">{{this.name}}</a></h2>
